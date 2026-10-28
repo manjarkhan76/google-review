@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Feedback & Review</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        body {
+            background-color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 16px;
+        }
+        .container {
+            background: #ffffff;
+            max-width: 480px;
+            width: 100%;
+            padding: 24px 20px;
+            border-radius: 18px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+            text-align: center;
+        }
+        h2 {
+            font-size: 20px;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+        p.subtitle {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+        .chip-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 440px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .chip-btn {
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 14px;
+            color: #1e293b;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chip-btn:active {
+            transform: scale(0.98);
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+        .chip-btn span.badge {
+            font-size: 11px;
+            background: #e2e8f0;
+            padding: 3px 8px;
+            border-radius: 20px;
+            color: #475569;
+            white-space: nowrap;
+        }
+        .toast {
+            display: none;
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0f172a;
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>अपनी राय चुनें (Select Feedback)</h2>
+    <p class="subtitle">किसी भी एक विकल्प पर टच करें, वह कॉपी होकर सीधे Google Review पेज खुल जाएगा।</p>
+
+    <div class="chip-grid" id="reviewContainer"></div>
+</div>
+
+<div class="toast" id="toastBox">✓ रिव्यू कॉपी हो गया! Google खुल रहा है...</div>
+
+<script>
+    // आपकी Google Review लिंक:
+    const GOOGLE_REVIEW_LINK = "https://g.page/r/CZi4HkzBefOIEBE/review";
+
+    // आपके 12 रेडीमेड रिव्यू ऑप्शन्स:
+    const reviewOptions = [
+        "Best laptop repair and service in Ramgarh. Fast and reliable work!",
+        "Excellent CCTV camera installation and network setup. Very professional team.",
+        "Quick desktop upgrade with SSD and RAM. Working smoothly now.",
+        "Very fast service and genuine computer accessories in Ramgarh.",
+        "Best IT support and surveillance solutions at genuine prices.",
+        "Bahut badhiya service mila, laptop bilkul theek ho gaya samay par.",
+        "Best place for CCTV camera setup and Thin Client configuration.",
+        "Prompt doorstep computer service and friendly technician support.",
+        "Reliable PC repairing center in Ramgarh Cantt. Highly recommended!",
+        "Quality networking cables and professional camera installation.",
+        "Good experience, reasonable rates and excellent technical guidance.",
+        "Fast diagnosis and same-day delivery for computer repair."
+    ];
+
+    const container = document.getElementById("reviewContainer");
+
+    reviewOptions.forEach((text) => {
+        const btn = document.createElement("button");
+        btn.className = "chip-btn";
+        btn.innerHTML = `
+            <span>${text}</span>
+            <span class="badge">चुनें ➜</span>
+        `;
+        btn.onclick = () => handleSelectReview(text);
+        container.appendChild(btn);
+    });
+
+    function handleSelectReview(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            showToast();
+            setTimeout(() => {
+                window.location.href = GOOGLE_REVIEW_LINK;
+            }, 800);
+        }).catch(() => {
+            window.location.href = GOOGLE_REVIEW_LINK;
+        });
+    }
+
+    function showToast() {
+        const toast = document.getElementById("toastBox");
+        toast.style.display = "block";
+    }
+</script>
+
+</body>
+</html>
